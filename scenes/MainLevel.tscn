@@ -1,12 +1,20 @@
-[gd_scene load_steps=6 format=3 uid="uid://cdoksexcakmop"]
+[gd_scene load_steps=10 format=3 uid="uid://cdoksexcakmop"]
 
 [ext_resource type="PackedScene" uid="uid://y5a4e3ajuy2r" path="res://scenes/StonePlatform.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://datfp8kxjrjg" path="res://scenes/BlueShip.tscn" id="2"]
 [ext_resource type="Script" path="res://scenes/PlatformBlue.gd" id="3"]
 [ext_resource type="Script" path="res://scenes/ObjectiveArea.gd" id="4"]
+[ext_resource type="Texture2D" uid="uid://bngxmk2me0con" path="res://assets/leveldone.png" id="5_luvsp"]
+[ext_resource type="Texture2D" uid="uid://c3cp2tt20e375" path="res://assets/continuebutton.png" id="6_o7840"]
 
 [sub_resource type="RectangleShape2D" id="1"]
 size = Vector2(138.75, 79)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vciwo"]
+size = Vector2(138.75, 79)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_36kb1"]
+bg_color = Color(0.723168, 0.514105, 0.748151, 0)
 
 [node name="MainLevel" type="Node"]
 
@@ -19,15 +27,63 @@ script = ExtResource("3")
 [node name="StonePlatform2" parent="PlatformBlue" instance=ExtResource("1")]
 position = Vector2(70, 0)
 
-[node name="BlueShip" parent="." instance=ExtResource("2")]
+[node name="BlueShip" parent="." groups=["ship"] instance=ExtResource("2")]
 position = Vector2(72.7009, 421.901)
 lock_rotation = true
 
-[node name="ObjectiveArea" type="Area2D" parent="."]
+[node name="ObjectiveArea" type="Area2D" parent="." node_paths=PackedStringArray("done")]
 script = ExtResource("4")
+done = NodePath("../Done")
+
+[node name="AreaUI" type="ColorRect" parent="ObjectiveArea"]
+offset_right = 140.0
+offset_bottom = 79.0
+color = Color(0, 0, 0, 1)
+
+[node name="Label" type="Label" parent="ObjectiveArea/AreaUI"]
+layout_mode = 0
+offset_left = 9.0
+offset_top = 27.0
+offset_right = 134.0
+offset_bottom = 50.0
+text = "OBJECTIVE AREA"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ObjectiveArea"]
 position = Vector2(70.625, 40)
 shape = SubResource("1")
 
+[node name="OutOfScreenArea" type="Area2D" parent="."]
+position = Vector2(-1999, 651)
+scale = Vector2(55.9293, 1.7293)
+script = ExtResource("4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OutOfScreenArea"]
+position = Vector2(70.625, 40)
+shape = SubResource("RectangleShape2D_vciwo")
+
+[node name="Done" type="TextureRect" parent="."]
+visible = false
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("5_luvsp")
+
+[node name="Button" type="Button" parent="Done"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -135.0
+offset_top = -286.0
+offset_right = 135.0
+offset_bottom = -192.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_36kb1")
+icon = ExtResource("6_o7840")
+
+[connection signal="body_entered" from="ObjectiveArea" to="PlatformBlue" method="_on_objective_area_body_entered"]
 [connection signal="body_entered" from="ObjectiveArea" to="ObjectiveArea" method="_on_ObjectiveArea_body_entered"]
+[connection signal="body_entered" from="OutOfScreenArea" to="ObjectiveArea" method="_on_body_entered"]
+[connection signal="pressed" from="Done/Button" to="ObjectiveArea" method="_on_button_pressed"]
