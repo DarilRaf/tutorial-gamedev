@@ -15,7 +15,7 @@ _Root node dari scene BlueShip dan StonePlatform menggunakan tipe yang berbeda. 
 > RigidBody2D dapat dipengaruhi oleh objek lain secara physics, misalnya bergerak, atau terhempas, sementara StaticBody2D bersifat statis dan tidak dipengaruhi oleh objek physic lain, tetapi tetap memiliki collision.
 
 _Ubah nilai atribut Mass pada tipe RigidBody2D secara bebas di scene BlueShip, lalu coba jalankan scene MainLevel. Apa yang terjadi?_
-> Pesawat memiliki efek berat yang berbeda saat diubah atribut Mass, karena atribut Mass menggambarkan massa objek pada game.
+> Merubah atribut massa tidak merubah kecepatan jatoh objek pesawat, tetapi mungkin dapat berpengaruh ke hal lain seperti collision dengan objek lain yang massanya berbeda.
 
 _Ubah nilai atribut Disabled pada tipe CollisionShape2D di scene StonePlatform, lalu coba jalankan scene MainLevel. Apa yang terjadi?_
 > Pesawat terjun bebas, karena atribut collision dimatikan, sehingga ia tidak menangkap  efek tabrakan dengan objek lain.
